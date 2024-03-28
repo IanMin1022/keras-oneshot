@@ -25,12 +25,13 @@ lang_dict = {}
 def loadimgs(path,n=0):
     #if data not already unzipped, unzip it.
     if not os.path.exists(path):
-	print("unzipping")
-	os.chdir(data_path)
-	path_components = path.split(os.path.sep)
-	path_components.insert(-1, "omniglot")
-	path_components.insert(-1, "python")
-	zip_path = os.path.sep.join(path_components)
+        print("unzipping")
+        os.chdir(data_path)
+
+        path_components = path.split(os.path.sep)
+        path_components.insert(-1, "omniglot")
+        path_components.insert(-1, "python")
+        zip_path = os.path.sep.join(path_components)
         os.system("unzip {} > /dev/null".format(zip_path+".zip" ))
 
     X=[]
