@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from scipy.misc import imread
+import imageio
 import pickle
 import os
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--path",help="Path where omniglot folder resides")
 parser.add_argument("--save", help = "Path to pickle data to.", default=os.getcwd())
 args = parser.parse_args()
-data_path = os.path.join(args.path, "python")
+data_path = os.path.join(args.path)
 train_folder = os.path.join(data_path,'images_background')
 valpath = os.path.join(data_path,'images_evaluation')
 
@@ -27,7 +27,13 @@ def loadimgs(path,n=0):
     if not os.path.exists(path):
         print("unzipping")
         os.chdir(data_path)
-        os.system("unzip {}".format(path+".zip" ))
+	    
+	path_components = path.split(os.path.sep)
+        path_components.insert(-1, "omniglot")
+        path_components.insert(-1, "python")
+        zip_path = os.path.sep.join(path_components)
+	    
+        os.system("unzip {} > /dev/null".format(path+".zip" ))
     X=[]
     y = []
     cat_dict = {}
@@ -45,7 +51,7 @@ def loadimgs(path,n=0):
             letter_path = os.path.join(alphabet_path, letter)
             for filename in os.listdir(letter_path):
                 image_path = os.path.join(letter_path, filename)
-                image = imread(image_path)
+                image = imageio.imread(image_path)
                 category_images.append(image)
                 y.append(curr_y)
             try:
